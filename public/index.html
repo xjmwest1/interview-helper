@@ -1,0 +1,76 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
+<body>
+    <div ng-app="app">
+        <div ng-controller="controller as vm" ng-cloak>
+            <div class="container">
+                <div class="fixed-top">
+                    <div class="container w-75 d-flex justify-content-center">
+                        <a href="#experiences">Experiences</a>
+                        <a href="#skills">Skills</a>
+                        <a href="#keywords">Keywords</a>
+                        <a href="#interviewquestions">Interview Questions</a>
+                    </div>
+                </div>
+
+                <div class="row" style="height:50px"></div>
+
+                <h1 id="experiences">Experiences</h1>
+
+                <ul class="list-group">
+                    <li class="list-group-item border-0" ng-repeat="experience in vm.experiences">
+                        <textarea class="form-control" ng-model="experience.text"></textarea>
+                        <md-chips ng-model="experience.skills" md-autocomplete-snap md-require-match="true">
+                            <md-autocomplete
+                                md-autofocus="true"
+                                md-min-length="1"
+                                md-search-text="vm.searchSkillsText"
+                                md-search-text-change="vm.searchSkills(vm.searchSkillsText)"
+                                md-items="skill in vm.searchSkillsResults"
+                                placeholder="+ Skill">
+
+                                <md-item-template>{{skill}}</md-item-template>
+                            </md-autocomplete>
+                        </md-chips>
+                    </li>
+                    <li class="list-group-item border-0">
+                        <textarea class="form-control" ng-model="vm.something" placeholder="New Experience"></textarea>
+                    </li>
+                </ul>
+
+                <div class="row" style="height:50px"></div>
+
+                <h1 id="skills">Skills</h1>
+
+                <md-chips ng-model="vm.skills" name="skills" md-removable="true" placeholder="+ Skill" md-on-remove="vm.removeSkill($chip)">
+                    <md-chip-template>
+                        <strong>{{$chip}}</strong>
+                    </md-chip-template>
+                </md-chips>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    
+    <script src="module.js"></script>
+    <script src="controller.js"></script>
+
+</body>
+
+
+</html>
