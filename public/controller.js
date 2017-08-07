@@ -2,23 +2,54 @@ angular
     .module('app')
     .controller('controller', controller);
 
-controller.$inject = ['$scope', '$timeout'];
+controller.$inject = ['$scope', '$timeout', '$rootScope'];
 
-function controller($scope, $timeout) {
+function controller($scope, $timeout, $rootScope) {
     var vm = this;
 
     // experiences
     vm.experiences = [];
-    vm.newExperience = {
-        text: null,
-        skills: []
-    };
+    vm.newExperience = null;
 
     vm.searchSkillsText = null;
     vm.searchSkillsResults = [];
 
+    vm.experiencesFilters = [];
+
     vm.searchSkills = (query) => {
-        vm.searchSkillsResults = vm.skills.filter((skill) => { return skill.indexOf(query) !== -1 });
+        if(!query || query.length === 0) return vm.skills;
+        return vm.skills.filter((skill) => { return skill.indexOf(query) !== -1 });
+    }
+
+    vm.addExperience = () => {
+        if(vm.newExperience) {
+            vm.experiences.push({
+                text: vm.newExperience,
+                skills: []
+            });
+        }
+        vm.newExperience = null;
+    }
+
+    vm.removeExperience = (experience) => {
+        var index = vm.experiences.indexOf(experience);
+        vm.experiences.splice(index, 1);
+    }
+
+    vm.applyExperiencesFilters = (experiences) => {
+        if(vm.experiencesFilters.length === 0) return experiences;
+
+        return experiences.filter((experience) => {
+            var shouldInclude = false;
+
+            vm.experiencesFilters.forEach((filter) => {
+                if(experience.skills.indexOf(filter) !== -1) {
+                    shouldInclude = true;
+                }
+            });
+
+            return shouldInclude;
+        });
     }
 
     // skills
@@ -70,6 +101,11 @@ function controller($scope, $timeout) {
         var data = snapshot.val();
 
         vm.experiences.push.apply(vm.experiences, data.experiences);
+        vm.experiences.forEach((experience) => {
+            if(!experience.skills) {
+                experience.skills = [];
+            }
+        });
         experiencesLoaded = experiencesJustLoaded = true;
 
         vm.skills.push.apply(vm.skills, data.skills);

@@ -1,12 +1,13 @@
 angular.module('app', [
-    'ngMaterial'
+    'ngMaterial',
+    'monospaced.elastic'
 ]);
 
 angular
     .module('app')
     .run(run);
 
-function run($rootScope) {
+function run() {
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyAdKKNqBFf-8jRFooYC8eEiQUPq996q450",
